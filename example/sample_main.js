@@ -3,7 +3,7 @@
 var etl_defs = {
 	"jobs": [
 		{
-			"job_name": "job01",
+			"job_name": "job01あいうえ",
 			"out_tables": ["tbl01", "tbl02", "tbl03"]
 		},
 		{
@@ -105,7 +105,10 @@ console.log({job_nodes});
 
 
 // 描画するところ
-var svg_g = d3.select("svg").append("g");
+var svg_g = d3.select("svg")
+    .style("font-family", "'ヒラギノ角ゴ Pro W3',Hiragino Kaku Gothic Pro,'メイリオ',Meiryo,Osaka,'ＭＳ Ｐゴシック',MS PGothic,sans-serif")
+    .append("g")
+;
 //svg領域の大きさを定義する
 var svgheight = 960, svgwidth = 1000;
 
@@ -120,19 +123,27 @@ var links = svg_g.selectAll(".link")
 ;
 
 // node
-var nodes = svg_g.selectAll("circle")
+var nodes1 = svg_g.selectAll("circle")
         .data(job_nodes)
         .enter()
         .append("circle")
         .attr("class", "job-circle")
         .attr("r", function(d){ return (d["type"]==0)? 20:10; })
-        .attr("fill", function(d){ return (d["type"]==0)? "#f00":"#00f"; })
+        .attr("fill", function(d){ return (d["type"]==0)? "#e33":"#66e"; })
         .call(d3.drag()
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended)
         )
         .on("click", function(d){ console.log(d.name); })
+;
+var texts1 = svg_g.selectAll("text")
+        .data(job_nodes)
+        .enter()
+        .append("text")
+        .attr("x", function(d){ return d.x; })
+        .attr("y", function(d){ return d.y; })
+        .text(d => d["name"])
 ;
 
 var line_force = d3.forceSimulation()
@@ -172,7 +183,7 @@ function dragended(d) {
 }
 // tick
 function ticked(){
-    nodes
+    nodes1
         .attr("cx", function(d){ return d.x; })
         .attr("cy", function(d){ return d.y; })
     ;
@@ -181,5 +192,9 @@ function ticked(){
         .attr("y1", function(d){ return d.source.y; })
         .attr("x2", function(d){ return d.target.x; })
         .attr("y2", function(d){ return d.target.y; })
+    ;
+    texts1
+        .attr("x", function(d){ return d.x-10; })
+        .attr("y", function(d){ return d.y+35; })
     ;
 }
