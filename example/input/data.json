@@ -1,0 +1,23 @@
+{
+	"jobs": [
+		{
+			"job_name": "job01",
+			"out_tables": ["tbl01", "tbl02", "tbl03"]
+		},
+		{
+			"job_name": "job11",
+			"in_tables": ["tbl01", "tbl02"],
+			"out_tables": ["tbl11", "tbl12"]
+		},
+		{
+			"job_name": "job21",
+			"in_tables": ["tbl03", "tbl11"],
+			"out_tables": ["tbl21"]
+		},
+		{
+			"job_name": "job31",
+			"in_tables": ["tbl01", "tbl11", "tbl21"],
+			"out_tables": ["tbl31"]
+		}
+	]
+}
