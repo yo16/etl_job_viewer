@@ -21,7 +21,7 @@ var etl_defs = {
 			"in_tables": ["tbl01", "tbl11", "tbl21"],
 			"out_tables": ["tbl31"]
 		}
-	]
+    ]
 };
 
 // ETLデータの解釈
@@ -59,7 +59,12 @@ function parse_etl_defs(df){
             // table
             // 前提: 特定のテーブルを作成するジョブは一意である
             let cur_job = job_def.find(e => (e["out_tables"].indexOf(name)>=0));
-            ret_val = get_level(df_, cur_job["job_name"], 0)+1;
+            if(cur_job){
+                ret_val = get_level(df_, cur_job["job_name"], 0)+1;
+            }else{
+                // Not Found時（手で作ったテーブルとか）
+                ret_val = 0;
+            }
         }
         return ret_val;
     }
@@ -99,7 +104,25 @@ function parse_etl_defs(df){
 
     return [nodes, links];
 }
+// linkのsourceにあってnodeにない場合はnodeに追加
+function add_empty_job(nodes, links){
+    for(l of links){
+        // nodeを検索
+        let cur_source_node = nodes.find(n => (n["name"]==l["source"]));
+        if(! cur_source_node){
+            // ない
+            let cur_target_node = nodes.find(n => (n["name"]==l["target"]));
+            nodes.push({
+                "name"      : l["source"],
+                "level"     : 0,
+                "type"      : (cur_target_node["type"]==0)?1:0
+            });
+        }
+    }
+}
 var [job_nodes, job_links] = parse_etl_defs(etl_defs);
+console.log({job_links});
+add_empty_job(job_nodes, job_links);
 console.log({job_nodes});
 //console.log({job_links});
 
