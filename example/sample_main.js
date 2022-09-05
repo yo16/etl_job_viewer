@@ -3,7 +3,7 @@
 var etl_defs = {
 	"jobs": [
 		{
-			"job_name": "job01あいうえ",
+			"job_name": "job01あいうえお",
 			"out_tables": ["tbl01", "tbl02", "tbl03"]
 		},
 		{
