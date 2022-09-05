@@ -128,10 +128,10 @@ console.log({job_nodes});
 
 
 // 描画するところ
-var svg_g = d3.select("svg")
+var svg = d3.select("svg")
     .style("font-family", "'ヒラギノ角ゴ Pro W3',Hiragino Kaku Gothic Pro,'メイリオ',Meiryo,Osaka,'ＭＳ Ｐゴシック',MS PGothic,sans-serif")
-    .append("g")
 ;
+var svg_g = svg.append("g");
 //svg領域の大きさを定義する
 var svgheight = 960, svgwidth = 1000;
 
@@ -221,3 +221,12 @@ function ticked(){
         .attr("y", function(d){ return d.y+35; })
     ;
 }
+// 拡大縮小
+var zoomed = function(){
+    svg_g.attr("transform", d3.event.transform);
+};
+svg.call(
+    d3.zoom()
+        .scaleExtent([0.3, 12])
+        .on("zoom", zoomed)
+);
